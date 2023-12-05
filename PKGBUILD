@@ -1,5 +1,5 @@
 pkgname=ksysguard-plasma6-git
-pkgver=5.21.80_r3503.g5b75d854
+pkgver=5.22.80_r3594.gdad37f0d
 pkgrel=1
 pkgdesc='Track and control the processes running in your system'
 arch=($CARCH)
