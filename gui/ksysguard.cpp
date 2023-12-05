@@ -128,14 +128,6 @@ TopLevel::TopLevel()
   mMonitorRemoteAction = actionCollection()->addAction( QStringLiteral("connect_host") );
   mMonitorRemoteAction->setIcon( QIcon::fromTheme(QStringLiteral("network-connect")) );
   connect(mMonitorRemoteAction, &QAction::triggered, this, &TopLevel::connectHost);
-  //knewstuff2 action
-  mHotNewWorksheetAction = actionCollection()->addAction( QStringLiteral("get_new_worksheet") );
-  mHotNewWorksheetAction->setIcon( QIcon::fromTheme(QStringLiteral("network-server")) );
-  connect(mHotNewWorksheetAction, &QAction::triggered, mWorkSpace, &Workspace::getHotNewWorksheet);
-  mHotNewWorksheetUploadAction = actionCollection()->addAction( QStringLiteral("upload_worksheet") );
-  mHotNewWorksheetUploadAction->setIcon( QIcon::fromTheme(QStringLiteral("network-server")) );
-  connect(mHotNewWorksheetUploadAction, &QAction::triggered, mWorkSpace, &Workspace::uploadHotNewWorksheet);
-
   mQuitAction = nullptr;
 
   mConfigureSheetAction = actionCollection()->addAction( QStringLiteral("configure_sheet") );
@@ -180,8 +172,6 @@ void TopLevel::retranslateUi()
   mTabExportAction->setText( i18n( "Save Tab &As..." ) );
   mTabRemoveAction->setText( i18n( "&Close Tab" ) );
   mMonitorRemoteAction->setText( i18n( "Monitor &Remote Machine..." ) );
-  mHotNewWorksheetAction->setText( i18n( "&Download New Tabs..." ) );
-  mHotNewWorksheetUploadAction->setText( i18n( "&Upload Current Tab..." ) );
 
   mConfigureSheetAction->setText( i18n( "Tab &Properties" ) );
   if(mQuitAction) {
@@ -206,7 +196,6 @@ void TopLevel::currentTabChanged(int index)
   bool locked = !sheet || sheet->isLocked();
   mTabRemoveAction->setVisible(!locked);
   mTabExportAction->setVisible(!locked);
-  mHotNewWorksheetUploadAction->setVisible(!locked);
   mMonitorRemoteAction->setVisible(!locked);
 
   //only show refresh option is update interval is 0 (manual)
@@ -236,9 +225,8 @@ void TopLevel::startSensorBrowserWidget()
 
 void TopLevel::showOnCurrentDesktop()
 {
-  KWindowSystem::setOnDesktop( winId(), KWindowSystem::currentDesktop() );
+  KWindowSystem::activateWindow((QWindow*)this);
   KUserTimestamp::updateUserTimestamp();
-  KWindowSystem::forceActiveWindow( winId() );
 }
 
 void TopLevel::importWorkSheet( const QString &fileName )
@@ -249,11 +237,6 @@ void TopLevel::importWorkSheet( const QString &fileName )
 void TopLevel::removeWorkSheet( const QString &fileName )
 {
   mWorkSpace->removeWorkSheet( fileName );
-}
-
-void TopLevel::getHotNewWorksheet()
-{
-  mWorkSpace->getHotNewWorksheet( );
 }
 
 QStringList TopLevel::listSensors( const QString &hostName )

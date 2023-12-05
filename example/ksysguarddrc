@@ -11,7 +11,6 @@ LogFiles=messages:/var/log/messages,kern:/var/log/kern.log,daemon:/var/log/daemo
 #	DiskStats       disk throughput. Data comes from /etc/diskstats
 #	LmSensors       information about motherboard and CPU
 #	LoadAvg         system load values
-#	LogFile         local logfiles
 #	Memory          physical memory and swap
 #	NetDev          throughput of network interfaces
 #	NetStat         number of TCP/UDP/ICMP/Unix sockets

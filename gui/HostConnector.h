@@ -58,7 +58,6 @@ class HostConnector : public QDialog
     bool useCustom() const;
 
   protected Q_SLOTS:
-    virtual void slotHelp();
     void slotHostNameChanged( const QString &_text );
   private:
     KComboBox *mCommands;

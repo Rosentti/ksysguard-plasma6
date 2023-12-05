@@ -20,6 +20,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#undef QT_NO_CAST_FROM_ASCII
+
 #include <QClipboard>
 #include <QCursor>
 #include <QLayout>
@@ -47,12 +49,12 @@
 #include "FancyPlotter.h"
 #include "ksysguard.h"
 #include "ListView.h"
-#include "LogFile.h"
 #include "MultiMeter.h"
 #include "ProcessController.h"
-#include "SensorLogger.h"
 #include "WorkSheet.h"
 #include "WorkSheetSettings.h"
+
+#undef QT_NO_CAST_FROM_ASCII
 
 WorkSheet::WorkSheet( QWidget *parent )
   : QWidget( parent )
@@ -339,14 +341,8 @@ KSGRD::SensorDisplay* WorkSheet::insertDisplay( DisplayType displayType, QString
         case DisplayDancingBars: 
             newDisplay = new DancingBars( this, displayTitle, &mSharedSettings);
             break;
-        case DisplaySensorLogger:
-            newDisplay = new SensorLogger( this, displayTitle, &mSharedSettings);
-            break;
         case DisplayListView:
             newDisplay = new ListView( this, displayTitle, &mSharedSettings);
-            break;
-        case DisplayLogFile:
-            newDisplay = new LogFile( this, displayTitle, &mSharedSettings );
             break;
         case DisplayProcessControllerRemote:
             newDisplay = new ProcessController(this, &mSharedSettings);
@@ -388,7 +384,6 @@ KSGRD::SensorDisplay *WorkSheet::addDisplay( const QString &hostName,
             QAction *a1 = pm.addAction( i18n( "&Line graph" ) );
             QAction *a2 = pm.addAction( i18n( "&Digital display" ) );
             QAction *a3 = pm.addAction( i18n( "&Bar graph" ) );
-            QAction *a4 = pm.addAction( i18n( "Log to a &file" ) );
             QAction *execed = pm.exec( QCursor::pos() );
             if (execed == a1)
                 displayType = DisplayFancyPlotter;
@@ -396,18 +391,10 @@ KSGRD::SensorDisplay *WorkSheet::addDisplay( const QString &hostName,
                 displayType = DisplayMultiMeter;
             else if (execed == a3)
                 displayType = DisplayDancingBars;
-            else if (execed == a4)
-                displayType = DisplaySensorLogger;
             else 
                 return nullptr;
         } else if ( sensorType == QLatin1String("listview") ) {
             displayType = DisplayListView;
-        }
-        else if ( sensorType == QLatin1String("logfile") ) {
-            displayType = DisplayLogFile;
-        }
-        else if ( sensorType == QLatin1String("sensorlogger") ) {
-            displayType = DisplaySensorLogger;
         }
         else if ( sensorType == QLatin1String("table") ) {
             if(hostName.isEmpty() || hostName == QLatin1String("localhost"))
@@ -572,10 +559,6 @@ bool WorkSheet::replaceDisplay( int row, int column, QDomElement& element, int r
         displayType = DisplayDancingBars;
     else if ( classType == QLatin1String("ListView") )
         displayType = DisplayListView;
-    else if ( classType == QLatin1String("LogFile") )
-        displayType = DisplayLogFile;
-    else if ( classType == QLatin1String("SensorLogger") )
-        displayType = DisplaySensorLogger;
     else if ( classType == QLatin1String("ProcessController") ) {
         if(hostName.isEmpty() || hostName == QLatin1String("localhost"))
             displayType = DisplayProcessControllerLocal;

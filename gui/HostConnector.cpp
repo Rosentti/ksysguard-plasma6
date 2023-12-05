@@ -23,7 +23,6 @@
 #include <KAcceleratorManager>
 #include <KComboBox>
 #include <KLocalizedString>
-#include <KHelpClient>
 
 #include <QDialogButtonBox>
 #include <QGroupBox>
@@ -45,7 +44,7 @@ HostConnector::HostConnector(QWidget *parent, const QString &name )
 
   QFrame *page = new QFrame( this );
   QVBoxLayout *vlayout = new QVBoxLayout(this);
-  mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, this);
+  mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
   vlayout->addWidget(page);
   vlayout->addWidget(mButtonBox);
   setLayout(vlayout);
@@ -126,7 +125,6 @@ HostConnector::HostConnector(QWidget *parent, const QString &name )
 
   connect(mButtonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(mButtonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-  connect(mButtonBox, &QDialogButtonBox::helpRequested, this, &HostConnector::slotHelp);
 
   connect(mUseCustom, &QRadioButton::toggled, mCommands, &KComboBox::setEnabled);
   connect(mUseDaemon, &QRadioButton::toggled, mPort, &QSpinBox::setEnabled);
@@ -222,11 +220,6 @@ bool HostConnector::useDaemon() const
 bool HostConnector::useCustom() const
 {
   return mUseCustom->isChecked();
-}
-
-void HostConnector::slotHelp()
-{
-  KHelpClient::invokeHelp( QStringLiteral("connectingtootherhosts"), QStringLiteral("ksysguard") );
 }
 
 

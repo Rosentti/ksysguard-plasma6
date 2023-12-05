@@ -22,6 +22,7 @@
 
 */
 
+#include <QObject>
 #include <QFileDialog>
 #include <QStandardPaths>
 
@@ -29,8 +30,6 @@
 #include <KMessageBox>
 #include <KAcceleratorManager>
 #include <KActionCollection>
-#include <KNSCore/Engine>
-#include <KNS3/QtQuickDialogWrapper>
 #include <KConfigGroup>
 
 #include "WorkSheet.h"
@@ -38,6 +37,8 @@
 
 #include "Workspace.h"
 #include "ksysguard.h"
+
+#undef QT_NO_CAST_FROM_ASCII
 
 Workspace::Workspace( QWidget* parent)
   : QTabWidget( parent )
@@ -166,16 +167,16 @@ bool Workspace::saveOnQuit()
 {
   for(int i = 0; i < mSheetList.size(); i++) {
       if ( mSheetList.at(i)->fileName().isEmpty() ) {
-        int res = KMessageBox::warningYesNoCancel( this,
-                  i18n( "The tab '%1' contains unsaved data.\n"
-                        "Do you want to save the tab?",
-                    tabText(indexOf( mSheetList.at(i) )) ), QString(), KStandardGuiItem::save(), KStandardGuiItem::discard() );
-        if ( res == KMessageBox::Yes )
-          saveWorkSheet( mSheetList.at(i) );
-        else if ( res == KMessageBox::Cancel )
-          return false; // abort quit
-      } else
-        saveWorkSheet(mSheetList.at(i));
+        if ( KMessageBox::warningContinueCancel( this, i18n( "The tab '%1' contains unsaved data.\n"
+                        "Do you want to close anyway?",
+                    tabText(indexOf( mSheetList.at(i) )) ),
+                    i18n("Close anyway?"), KStandardGuiItem::del())
+                == KMessageBox::Continue ) {
+            return true;
+        } else {
+            return false;
+        }
+      }
   }
   return true;
 }
@@ -286,48 +287,15 @@ WorkSheet *Workspace::currentWorkSheet()
 {
     return (WorkSheet*)currentWidget();
 }
-void Workspace::uploadHotNewWorksheet()
-{
-    WorkSheet *currentWorksheet = currentWorkSheet();
-    if(!currentWorksheet)
-        return;
-    KNSCore::Engine engine;
-    engine.init(QStringLiteral("ksysguard.knsrc"));
-    Q_ASSERT(engine.categories().size() == 1);
-    KMessageBox::information(this,
-                             xi18nc("@info",
-                                 "<para>You can publish your custom tab on the <link url='%1'>KDE Store</link> in the <icode>%2</icode> category.</para>"
-                                 "<para><filename>%3</filename></para>",
-                                    QStringLiteral("https://store.kde.org"),
-                                    engine.categories().at(0),
-                                    currentWorksheet->fullFileName()),
-                             i18n("Upload custom System Monitor tab"),
-                             QString(),
-                             KMessageBox::AllowLink);
-}
-void Workspace::getHotNewWorksheet()
-{
-    KNS3::QtQuickDialogWrapper *dialog = new KNS3::QtQuickDialogWrapper(QStringLiteral("ksysguard.knsrc"), this);
-    dialog->open();
-    connect(dialog, &KNS3::QtQuickDialogWrapper::closed, this, [this, dialog] {
-        const QList<KNSCore::EntryInternal> entries = dialog->changedEntries();
-        for (auto entry : entries) {
-            if(!entry.installedFiles().isEmpty()) {
-                const QString filename = entry.installedFiles().constFirst();
-                restoreWorkSheet(filename, true);
-            }
-        }
-        dialog->deleteLater();
-    });
-}
 
 bool Workspace::restoreWorkSheet( const QString &fileName, bool switchToTab)
 {
   // extract filename without path
   QString baseName = fileName.right( fileName.length() - fileName.lastIndexOf( '/' ) - 1 );
 
-  foreach( WorkSheet *sheet, mSheetList ) {
-      if(sheet->fileName() == baseName)
+  for (auto sheet : mSheetList)
+  {
+    if(sheet->fileName() == baseName)
           return false; //Don't add the same sheet twice
   }
 

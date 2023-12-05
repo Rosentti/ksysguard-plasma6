@@ -59,7 +59,6 @@ class TopLevel : public KXmlGuiWindow, public KSGRD::SensorClient
     Q_SCRIPTABLE Q_NOREPLY void showOnCurrentDesktop();
     Q_SCRIPTABLE Q_NOREPLY void importWorkSheet( const QString &fileName );
     Q_SCRIPTABLE Q_NOREPLY void removeWorkSheet( const QString &fileName );
-    Q_SCRIPTABLE Q_NOREPLY void getHotNewWorksheet();
     Q_SCRIPTABLE QStringList listHosts();
     Q_SCRIPTABLE QStringList listSensors( const QString &hostName );
 

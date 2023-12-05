@@ -21,6 +21,7 @@
 
 */
 
+#include <QObject>
 #include <QCheckBox>
 #include <QDebug>
 #include <QDomElement>
@@ -100,9 +101,10 @@ void SensorDisplay::timerTick()
 {
   int i = 0;
 
-  foreach( SensorProperties *s, mSensors) {
+  for (auto s : mSensors)
+  {
     sendRequest( s->hostName(), s->name(), i++ );
- }
+  }
 }
 
 void SensorDisplay::showContextMenu(const QPoint &pos)
@@ -195,9 +197,11 @@ void SensorDisplay::updateWhatsThis()
 
 void SensorDisplay::hosts( QStringList& list )
 {
-  foreach( SensorProperties *s, mSensors)
+  for (auto s : mSensors)
+  {
     if ( !list.contains( s->hostName() ) )
       list.append( s->hostName() );
+  }
 }
 
 QColor SensorDisplay::restoreColor( QDomElement &element, const QString &attr,

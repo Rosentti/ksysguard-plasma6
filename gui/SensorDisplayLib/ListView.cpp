@@ -261,6 +261,7 @@ ListView::ColumnType ListView::convertColumnType(const QString &type) const
     else
         return Text;
 }
+#undef QT_NO_CAST_FROM_ASCII
 
 void
 ListView::answerReceived(int id, const QList<QByteArray>& answer)
@@ -326,6 +327,7 @@ ListView::answerReceived(int id, const QList<QByteArray>& answer)
                         item->setData(records[j].toFloat(), Qt::UserRole);
                         break;
                       case Time:
+                        #undef QT_NO_CAST_FROM_ASCII
                         item->setData(QTime::fromString(records[j]), Qt::DisplayRole);
                         item->setData(QTime::fromString(records[j]), Qt::UserRole);
                         break;
@@ -337,6 +339,7 @@ ListView::answerReceived(int id, const QList<QByteArray>& answer)
                       case DiskStat:
                       case Text:
                       default:
+                        #undef QT_NO_CAST_FROM_ASCII
                         item->setText(records[j]);
                         item->setData(records[j], Qt::UserRole);
                     }

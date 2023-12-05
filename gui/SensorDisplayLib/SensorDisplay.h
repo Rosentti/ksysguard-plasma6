@@ -26,12 +26,11 @@
 #include <QEvent>
 #include <QPointer>
 #include <QWidget>
+#include <QDomDocument>
+#include <QDomElement>
 
 #include <ksgrd/SensorClient.h>
 #include "SharedSettings.h"
-
-class QDomDocument;
-class QDomElement;
 
 namespace KSGRD {
 

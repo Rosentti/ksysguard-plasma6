@@ -6,10 +6,10 @@ set(PROJECT_VERSION "5.22.80")
 set(KSYSGUARD_VERSION 4.98.0)
 set(KSYSGUARD_STRING_VERSION "${KSYSGUARD_VERSION}")
 
-set(QT_MIN_VERSION "5.15.2")
-set(KF5_MIN_VERSION "5.90")
-set(KDE_COMPILERSETTINGS_LEVEL "5.82")
-find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
+set(QT_MIN_VERSION "6.5.0")
+set(KF_MIN_VERSION "5.246.0")
+
+find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH}  ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(CheckIncludeFiles)
@@ -23,12 +23,13 @@ include(FeatureSummary)
 include (ECMConfiguredInstall)
 include (ECMGenerateDBusServiceFile)
 
-find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+find_package(Qt6 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core
     Widgets
     Test
+    Xml
 )
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
+find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS
     Config
     CoreAddons
     DBusAddons
@@ -37,13 +38,14 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS
     IconThemes
     ItemViews
     KIO
-    NewStuff
     Notifications
     WindowSystem
+    XmlGui
 )
 
 find_package(KSysGuard REQUIRED)
 
+remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_FROM_BYTEARRAY)
 add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
 add_definitions(-DQT_USE_QSTRINGBUILDER)
 #add_definitions(-DQT_NO_CAST_FROM_ASCII)

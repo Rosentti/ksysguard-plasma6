@@ -21,12 +21,16 @@
 
 */
 
+#undef QT_NO_CAST_FROM_ASCII
+
 #ifndef KSG_WORKSPACE_H
 #define KSG_WORKSPACE_H
 
 #include <KDirWatch>
 
 #include <QTabWidget>
+
+#undef QT_NO_CAST_FROM_ASCII
 
 class KConfig;
 class QString;
@@ -59,8 +63,6 @@ class Workspace : public QTabWidget
     void removeWorkSheet();
     void removeWorkSheet( const QString &fileName );
     void removeAllWorkSheets();
-    void getHotNewWorksheet();
-    void uploadHotNewWorksheet();
     void cut();
     void copy();
     void paste();
