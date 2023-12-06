@@ -10,3 +10,8 @@ I don't intend to add features or reimplement old features broken by the Qt6 por
 - Rendering is quite broken with Qt6
 - Some features needed to be removed:
   - Log file related stuff (I can accept PRs for this, but will not reimplement it myself)
+
+# Other
+This repo also contains a script: `shortcut_helper.sh`
+
+This script can be bound in KDE to replace the standard Ctrl+Esc behaviour with KSysGuard (it will not restore the previous UI that Ctrl+Esc had)
