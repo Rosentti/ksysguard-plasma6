@@ -20,8 +20,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#undef QT_NO_CAST_FROM_ASCII
-
 #include <QClipboard>
 #include <QCursor>
 #include <QLayout>
@@ -53,8 +51,6 @@
 #include "ProcessController.h"
 #include "WorkSheet.h"
 #include "WorkSheetSettings.h"
-
-#undef QT_NO_CAST_FROM_ASCII
 
 WorkSheet::WorkSheet( QWidget *parent )
   : QWidget( parent )

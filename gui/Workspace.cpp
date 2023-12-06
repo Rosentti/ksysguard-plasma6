@@ -38,8 +38,6 @@
 #include "Workspace.h"
 #include "ksysguard.h"
 
-#undef QT_NO_CAST_FROM_ASCII
-
 Workspace::Workspace( QWidget* parent)
   : QTabWidget( parent )
 {
