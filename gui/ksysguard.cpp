@@ -328,13 +328,13 @@ void TopLevel::disconnectHost()
 
 bool TopLevel::event( QEvent *e )
 {
-  if ( e->type() == QEvent::User ) {
-    /* Due to the asynchronous communication between ksysguard and its
-     * back-ends, we sometimes need to show message boxes that were
-     * triggered by objects that have died already. */
-    KMessageBox::error( this, static_cast<KSGRD::SensorManager::MessageEvent*>(e)->message() );
+  if (e->type() == QEvent::User) {
+      /* Due to the asynchronous communication between ksysguard and its
+        * back-ends, we sometimes need to show message boxes that were
+        * triggered by objects that have died already. */
+      KMessageBox::error(this, static_cast<KSGRD::SensorManager::MessageEvent *>(e)->message());
 
-    return true;
+      return true;
   }
 
   return KXmlGuiWindow::event( e );

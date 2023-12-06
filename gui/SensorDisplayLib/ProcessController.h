@@ -78,6 +78,10 @@ public:
 Q_SIGNALS:
     void updated();
     void processListChanged();
+
+protected:
+    bool event( QEvent* ) override;
+    
 private Q_SLOTS:
     void runCommand(const QString &command, int id);
 

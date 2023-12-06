@@ -23,6 +23,7 @@
 #ifndef KSG_KSYSGUARD_H
 #define KSG_KSYSGUARD_H
 
+#include <QTimer>
 #include <QEvent>
 #include <QDBusMessage>
 
@@ -96,10 +97,8 @@ class TopLevel : public KXmlGuiWindow, public KSGRD::SensorClient
     QAction *mTabExportAction;
     QAction *mTabRemoveAction;
     QAction *mMonitorRemoteAction;
-    QAction *mHotNewWorksheetAction;
     QAction *mQuitAction;
     QAction *mConfigureSheetAction;
-    QAction *mHotNewWorksheetUploadAction;
     QAction *mRefreshTabAction;
     QAction *mShowMenuBarAction;
     QLabel *sbProcessCount;

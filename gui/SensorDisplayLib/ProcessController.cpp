@@ -127,10 +127,15 @@ bool ProcessController::saveSettings(QDomDocument& doc, QDomElement& element)
 void ProcessController::timerTick()  {
     mProcessList->updateList();
 
+    this->repaint();
+    this->parentWidget()->repaint();
 }
 void ProcessController::answerReceived( int id, const QList<QByteArray>& answer ) {
     if(mProcesses)
         mProcesses->answerReceived(id, answer);
+
+    this->repaint();
+    this->parentWidget()->repaint();
 }
 
 bool ProcessController::addSensor(const QString& hostName,
@@ -182,5 +187,11 @@ bool ProcessController::addSensor(const QString& hostName,
 
 void ProcessController::runCommand(const QString &command, int id) {
     sendRequest(sensors().at(0)->hostName(), command, id);
+    this->repaint();
+    this->parentWidget()->repaint();
 }
 
+bool ProcessController::event(QEvent *e)
+{
+  return KSGRD::SensorDisplay::event( e );
+}
